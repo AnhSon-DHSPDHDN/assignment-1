@@ -1,0 +1,27 @@
+.btn {
+  border: none;
+  color: black;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.btn:hover{
+  cursor: pointer;
+}
+
+.btn--pluss{
+  padding: 0px 10px;
+  border: 3px solid black;
+  border-radius: 50%;
+}
+
+.btn--completed{
+  display: block;
+  color: rgb(8, 245, 87);
+  margin-top: 4px;
+}
+
+.btn--remove{
+  font-weight: 700;
+}
