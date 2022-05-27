@@ -16,6 +16,7 @@ function App() {
       </div>
       <Divider fullWidth />
       <List />
+      <Divider fullWidth />
       <Panigation />
     </div>
   );
