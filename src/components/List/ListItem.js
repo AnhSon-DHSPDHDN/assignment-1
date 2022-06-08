@@ -5,12 +5,18 @@ import ListContent from './ListContent'
 import './style.css'
 
 export default class ListItem extends Component {
+  constructor(props) {
+    super(props)
+    this.props = props
+  }
+
   render() {
+    const { task } = this.props
     return (
       <>
         <div className='list-item'>
           <div>
-            <ListContent content="This is a first task!" />
+            <ListContent content={task.taskName} />
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
             <ButtonSpecial completed />
