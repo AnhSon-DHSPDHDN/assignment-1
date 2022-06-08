@@ -1,0 +1,28 @@
+{
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.tabSize": 2,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "eslint.alwaysShowStatus": true,
+  "editor.formatOnSave": true,
+  "remote.SSH.remotePlatform": {
+    "deploy": "linux",
+    "loto88": "linux",
+    "tranvananhson": "linux"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "files.eol": "\n",
+  "i18n-ally.localesPaths": "",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "js/ts.implicitProjectConfig.experimentalDecorators": true
+}

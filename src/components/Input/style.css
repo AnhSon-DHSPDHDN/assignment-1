@@ -1,0 +1,9 @@
+.input {
+  padding: 10px 10px;
+}
+
+.input--task {
+  border: 2px solid rgb(53, 170, 248);
+  border-radius: 10px;
+  width: 100%;
+}
