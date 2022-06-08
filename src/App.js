@@ -5,6 +5,7 @@ import Input from 'components/Input';
 import Divider from 'components/Divider';
 import List from 'components/List';
 import Panigation from 'components/Panigation';
+import { initialTasks } from 'constants/common';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <ButtonPluss />
       </div>
       <Divider fullWidth />
-      <List />
+      <List taskLists={initialTasks} />
       <Divider fullWidth />
       <Panigation />
     </div>
