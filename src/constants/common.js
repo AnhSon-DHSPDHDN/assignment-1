@@ -5,6 +5,7 @@ export const defaultValueTask = {
   isCompleted: false
 }
 
+export const LIMIT_TASK_IN_PAGE = 5
 
 // task = {
 //   id: ,
