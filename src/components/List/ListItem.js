@@ -11,16 +11,20 @@ export default class ListItem extends Component {
   }
 
   render() {
-    const { task } = this.props
+    const { task, handleDeleteTask, handleCompleteTask } = this.props
     return (
       <>
         <div className='list-item'>
           <div>
-            <ListContent content={task.taskName} />
+            <ListContent content={task.taskName} isCompleted={task.isCompleted} />
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <ButtonSpecial completed />
-            <ButtonSpecial remove />
+            {
+              !task.isCompleted &&
+              <ButtonSpecial completed onClick={() => handleCompleteTask(task.id)}
+              />
+            }
+            <ButtonSpecial remove onClick={() => handleDeleteTask(task.id)} />
           </div>
         </div>
         <Divider fullWidth />

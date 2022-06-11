@@ -19,6 +19,8 @@ export default class App extends Component {
     }
     this.handleChangeInputTask = this.handleChangeInputTask.bind(this)
     this.handleAddTask = this.handleAddTask.bind(this)
+    this.handleDeleteTask = this.handleDeleteTask.bind(this)
+    this.handleCompleteTask = this.handleCompleteTask.bind(this)
   }
 
   handleChangeInputTask(e) {
@@ -28,7 +30,12 @@ export default class App extends Component {
   }
 
   handleAddTask() {
-    if (!this.state.inputTaskType) return
+    if (!this.state.inputTaskType.trim()) {
+      this.setState({
+        inputTaskType: ''
+      })
+      return
+    }
 
     const newTask = {
       ...defaultValueTask,
@@ -45,6 +52,32 @@ export default class App extends Component {
     })
   }
 
+  handleDeleteTask(id) {
+    const listTasks = [...this.state.listTasks];
+    const indexDelete = listTasks.findIndex(task => task.id === id)
+    if (indexDelete !== -1) {
+      listTasks.splice(indexDelete, 1)
+      this.setState({
+        listTasks: [...listTasks]
+      })
+    }
+  }
+
+  handleCompleteTask(id) {
+    const listTasks = [...this.state.listTasks];
+    const indexUpdate = listTasks.findIndex(task => task.id === id)
+    if (indexUpdate !== -1) {
+      const taskReplace = {
+        ...listTasks[indexUpdate],
+        isCompleted: true
+      }
+      listTasks.splice(indexUpdate, 1, taskReplace)
+      this.setState({
+        listTasks: listTasks
+      })
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -57,7 +90,11 @@ export default class App extends Component {
           <ButtonPluss onClick={this.handleAddTask} />
         </div>
         <Divider fullWidth />
-        <List taskLists={this.state.listTasks} />
+        <List
+          taskLists={this.state.listTasks}
+          handleDeleteTask={this.handleDeleteTask}
+          handleCompleteTask={this.handleCompleteTask}
+        />
         <Divider fullWidth />
         <Panigation />
       </div>

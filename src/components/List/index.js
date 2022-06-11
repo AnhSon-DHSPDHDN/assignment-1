@@ -8,10 +8,17 @@ export default class List extends Component {
   }
 
   render() {
-    const { taskLists } = this.props
+    const { taskLists, handleDeleteTask, handleCompleteTask } = this.props
     return (
       <div className='list-wrapper'>
-        {taskLists.map(taskItem => (<ListItem key={taskItem.id} task={taskItem} />))}
+        {taskLists.map(taskItem => (
+          <ListItem
+            key={taskItem.id}
+            task={taskItem}
+            handleDeleteTask={handleDeleteTask}
+            handleCompleteTask={handleCompleteTask}
+          />
+        ))}
       </div>
     )
   }

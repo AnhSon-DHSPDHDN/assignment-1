@@ -7,10 +7,21 @@ export default class ListContent extends Component {
   }
 
   render() {
-    const { content } = this.props
+    const { content, isCompleted } = this.props
 
     return (
-      <p>{content}</p>
+      <p
+        style={{
+          color: isCompleted ? 'green' : 'black',
+          fontWeight: 700,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '460px'
+        }}
+      >
+        {content}
+      </p>
     )
   }
 }
