@@ -5,7 +5,7 @@ import Input from 'components/Input';
 import Divider from 'components/Divider';
 import List from 'components/List';
 import Panigation from 'components/Panigation';
-import { defaultValueTask, initialTasks } from 'constants/common';
+import { defaultValueTask, initialTasks, LIMIT_TASK_IN_PAGE } from 'constants/common';
 
 
 import React, { Component } from 'react'
@@ -16,11 +16,14 @@ export default class App extends Component {
     this.state = {
       listTasks: initialTasks,
       inputTaskType: '',
+      currentPage: 1
     }
     this.handleChangeInputTask = this.handleChangeInputTask.bind(this)
     this.handleAddTask = this.handleAddTask.bind(this)
     this.handleDeleteTask = this.handleDeleteTask.bind(this)
     this.handleCompleteTask = this.handleCompleteTask.bind(this)
+    this.getTaskInCurrentPage = this.getTaskInCurrentPage.bind(this)
+    this.handleSetCurrentPage = this.handleSetCurrentPage.bind(this)
   }
 
   handleChangeInputTask(e) {
@@ -78,6 +81,17 @@ export default class App extends Component {
     }
   }
 
+  getTaskInCurrentPage() {
+    const startIndex = this.state.currentPage * LIMIT_TASK_IN_PAGE - LIMIT_TASK_IN_PAGE
+    return [...this.state.listTasks.slice(startIndex, startIndex + LIMIT_TASK_IN_PAGE)]
+  }
+
+  handleSetCurrentPage(page) {
+    this.setState({
+      currentPage: page
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -91,12 +105,17 @@ export default class App extends Component {
         </div>
         <Divider fullWidth />
         <List
-          taskLists={this.state.listTasks}
+          taskLists={this.getTaskInCurrentPage()}
           handleDeleteTask={this.handleDeleteTask}
           handleCompleteTask={this.handleCompleteTask}
         />
         <Divider fullWidth />
-        <Panigation />
+        <Panigation
+          currentPage={this.state.currentPage}
+          taskLists={this.state.listTasks}
+          limit={LIMIT_TASK_IN_PAGE}
+          handleSetCurrentPage={this.handleSetCurrentPage}
+        />
       </div>
     );
   }
