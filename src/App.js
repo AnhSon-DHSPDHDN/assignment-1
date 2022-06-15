@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Layout1 from './compontents/Layout1';
+import { CommonContext } from './contexts';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      helloWorld: 'helloWorld'
+    }
+    this.handleChangeText = this.handleChangeText.bind(this)
+  }
+
+  handleChangeText() {
+    this.setState({
+      helloWorld: 'hello Viet Nam ' + Math.random(20)
+    })
+  }
+
+  render() {
+    return (
+      <CommonContext.Provider value={{ ...this.state, handleChangeText: this.handleChangeText }}>
+        <Layout1 />
+      </CommonContext.Provider >
+    );
+  }
 }
 
 export default App;
