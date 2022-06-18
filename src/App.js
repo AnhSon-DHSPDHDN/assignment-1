@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import './App.css';
 import Header from 'components/Header';
 import ButtonPluss from 'components/Button/ButtonPluss';
@@ -6,118 +7,89 @@ import Divider from 'components/Divider';
 import List from 'components/List';
 import Panigation from 'components/Panigation';
 import { defaultValueTask, initialTasks, LIMIT_TASK_IN_PAGE } from 'constants/common';
+// import useMagicNum from 'hooks/useMagicNum';
 
+export default function App() {
+  const [inputTaskType, setInputTaskType] = useState('')
+  const [listTasks, setListTasks] = useState(initialTasks)
+  const [currentPage, setCurrentPage] = useState(1)
+  // const magicNum = useMagicNum()
 
-import React, { Component } from 'react'
-
-export default class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      listTasks: initialTasks,
-      inputTaskType: '',
-      currentPage: 1
-    }
-    this.handleChangeInputTask = this.handleChangeInputTask.bind(this)
-    this.handleAddTask = this.handleAddTask.bind(this)
-    this.handleDeleteTask = this.handleDeleteTask.bind(this)
-    this.handleCompleteTask = this.handleCompleteTask.bind(this)
-    this.getTaskInCurrentPage = this.getTaskInCurrentPage.bind(this)
-    this.handleSetCurrentPage = this.handleSetCurrentPage.bind(this)
+  const handleChangeInputTask = (e) => {
+    setInputTaskType(e.target.value)
   }
 
-  handleChangeInputTask(e) {
-    this.setState({
-      inputTaskType: e.target.value
-    })
-  }
-
-  handleAddTask() {
-    if (!this.state.inputTaskType.trim()) {
-      this.setState({
-        inputTaskType: ''
-      })
+  const handleAddTask = () => {
+    if (!inputTaskType.trim()) {
+      setInputTaskType('')
       return
     }
 
     const newTask = {
       ...defaultValueTask,
       id: new Date().getTime(),
-      taskName: this.state.inputTaskType,
+      taskName: inputTaskType,
     }
 
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        listTasks: [newTask, ...prevState.listTasks],
-        inputTaskType: ''
-      }
-    })
+    setListTasks([newTask, ...listTasks])
+    setInputTaskType('')
   }
 
-  handleDeleteTask(id) {
-    const listTasks = [...this.state.listTasks];
-    const indexDelete = listTasks.findIndex(task => task.id === id)
+  const handleDeleteTask = (id) => {
+    const listTasksClone = [...listTasks];
+    const indexDelete = listTasksClone.findIndex(task => task.id === id)
     if (indexDelete !== -1) {
-      listTasks.splice(indexDelete, 1)
-      this.setState({
-        listTasks: [...listTasks]
-      })
+      listTasksClone.splice(indexDelete, 1)
+      setListTasks([...listTasksClone])
     }
   }
 
-  handleCompleteTask(id) {
-    const listTasks = [...this.state.listTasks];
-    const indexUpdate = listTasks.findIndex(task => task.id === id)
+  const handleCompleteTask = (id) => {
+    const listTasksClone = [...listTasks];
+    const indexUpdate = listTasksClone.findIndex(task => task.id === id)
     if (indexUpdate !== -1) {
       const taskReplace = {
-        ...listTasks[indexUpdate],
+        ...listTasksClone[indexUpdate],
         isCompleted: true
       }
-      listTasks.splice(indexUpdate, 1, taskReplace)
-      this.setState({
-        listTasks: listTasks
-      })
+      listTasksClone.splice(indexUpdate, 1, taskReplace)
+      setListTasks([...listTasksClone])
     }
   }
 
-  getTaskInCurrentPage() {
-    const startIndex = this.state.currentPage * LIMIT_TASK_IN_PAGE - LIMIT_TASK_IN_PAGE
-    return [...this.state.listTasks.slice(startIndex, startIndex + LIMIT_TASK_IN_PAGE)]
+  const getTaskInCurrentPage = () => {
+    const startIndex = currentPage * LIMIT_TASK_IN_PAGE - LIMIT_TASK_IN_PAGE
+    return [...listTasks.slice(startIndex, startIndex + LIMIT_TASK_IN_PAGE)]
   }
 
-  handleSetCurrentPage(page) {
-    this.setState({
-      currentPage: page
-    })
+  const handleSetCurrentPage = (page) => {
+    setCurrentPage(page)
   }
 
-  render() {
-    return (
-      <div className="App">
-        <Header title={'TO DO LIST APPLICATION'} />
-        <div className='add-task-wrapper'>
-          <Input
-            handleChangeInputTask={this.handleChangeInputTask}
-            value={this.state.inputTaskType}
-          />
-          <ButtonPluss onClick={this.handleAddTask} />
-        </div>
-        <Divider fullWidth />
-        <List
-          taskLists={this.getTaskInCurrentPage()}
-          handleDeleteTask={this.handleDeleteTask}
-          handleCompleteTask={this.handleCompleteTask}
+  return (
+    <div className="App">
+      <Header title={'TO DO LIST APPLICATION'} />
+      <div className='add-task-wrapper'>
+        <Input
+          handleChangeInputTask={handleChangeInputTask}
+          value={inputTaskType}
         />
-        <Divider fullWidth />
-        <Panigation
-          currentPage={this.state.currentPage}
-          taskLists={this.state.listTasks}
-          limit={LIMIT_TASK_IN_PAGE}
-          handleSetCurrentPage={this.handleSetCurrentPage}
-        />
+        <ButtonPluss onClick={handleAddTask} />
       </div>
-    );
-  }
+      <Divider fullWidth />
+      <List
+        taskLists={getTaskInCurrentPage()}
+        handleDeleteTask={handleDeleteTask}
+        handleCompleteTask={handleCompleteTask}
+      />
+      <Divider fullWidth />
+      <Panigation
+        currentPage={currentPage}
+        taskLists={listTasks}
+        limit={LIMIT_TASK_IN_PAGE}
+        handleSetCurrentPage={handleSetCurrentPage}
+      />
+    </div>
+  );
 }
 
