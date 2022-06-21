@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css';
 import Header from 'components/Header';
 import ButtonPluss from 'components/Button/ButtonPluss';
@@ -6,20 +6,31 @@ import Input from 'components/Input';
 import Divider from 'components/Divider';
 import List from 'components/List';
 import Panigation from 'components/Panigation';
-import { defaultValueTask, initialTasks, LIMIT_TASK_IN_PAGE } from 'constants/common';
-// import useMagicNum from 'hooks/useMagicNum';
-
+import { defaultValueTask, LIMIT_TASK_IN_PAGE } from 'constants/common';
+import { createNewTask, deleteTaskById, getAllTasks, getTaskById, updateTaskById } from 'apis/taskApi';
 export default function App() {
   const [inputTaskType, setInputTaskType] = useState('')
-  const [listTasks, setListTasks] = useState(initialTasks)
+  const [listTasks, setListTasks] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  // const magicNum = useMagicNum()
+
+  useEffect(() => {
+    handleGetAllTask()
+  }, [])
+
+  const handleGetAllTask = async () => {
+    try {
+      const data = await getAllTasks()
+      data && setListTasks(data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleChangeInputTask = (e) => {
     setInputTaskType(e.target.value)
   }
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (!inputTaskType.trim()) {
       setInputTaskType('')
       return
@@ -31,29 +42,32 @@ export default function App() {
       taskName: inputTaskType,
     }
 
-    setListTasks([newTask, ...listTasks])
-    setInputTaskType('')
-  }
-
-  const handleDeleteTask = (id) => {
-    const listTasksClone = [...listTasks];
-    const indexDelete = listTasksClone.findIndex(task => task.id === id)
-    if (indexDelete !== -1) {
-      listTasksClone.splice(indexDelete, 1)
-      setListTasks([...listTasksClone])
+    try {
+      await createNewTask(newTask)
+      await handleGetAllTask()
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setInputTaskType('')
     }
   }
 
-  const handleCompleteTask = (id) => {
-    const listTasksClone = [...listTasks];
-    const indexUpdate = listTasksClone.findIndex(task => task.id === id)
-    if (indexUpdate !== -1) {
-      const taskReplace = {
-        ...listTasksClone[indexUpdate],
-        isCompleted: true
-      }
-      listTasksClone.splice(indexUpdate, 1, taskReplace)
-      setListTasks([...listTasksClone])
+  const handleDeleteTask = async (id) => {
+    try {
+      await deleteTaskById(id)
+      await handleGetAllTask()
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleCompleteTask = async (id) => {
+    try {
+      const taskById = await getTaskById(id)
+      await updateTaskById(id, { ...taskById, isCompleted: true })
+      await handleGetAllTask()
+    } catch (error) {
+      console.log(error);
     }
   }
 
