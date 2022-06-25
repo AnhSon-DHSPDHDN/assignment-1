@@ -1,19 +1,18 @@
-import React, { Component } from 'react'
+import React, { useContext } from 'react'
+import { TaskStoreContext } from 'stores/TaskStore'
 import './style.css'
 
-export default class ButtonPluss extends Component {
-  constructor(props) {
-    super(props)
-    this.props = props
-  }
+const ButtonPluss = () => {
+  const TaskStore = useContext(TaskStoreContext)
+  const { handleAddTask } = TaskStore
 
-  render() {
-    return (
-      <button
-        className='btn btn--pluss'
-        style={{ fontSize: 40 }}
-        onClick={this.props.onClick}
-      >+</button>
-    )
-  }
+  return (
+    <button
+      className='btn btn--pluss'
+      style={{ fontSize: 40 }}
+      onClick={handleAddTask}
+    >+</button>
+  )
 }
+
+export default ButtonPluss

@@ -1,20 +1,19 @@
-import React, { Component } from 'react'
+import React, { useContext } from 'react'
+import { observer } from 'mobx-react'
 import './style.css'
+import { TaskStoreContext } from 'stores/TaskStore'
 
-export default class Input extends Component {
-  constructor(props) {
-    super(props)
-    this.props = props
-  }
-
-  render() {
-    return (
-      <input
-        className='input input--task'
-        placeholder='Add new task in here'
-        value={this.props.value}
-        onChange={this.props.handleChangeInputTask}
-      />
-    )
-  }
+const Input = () => {
+  const TaskStore = useContext(TaskStoreContext)
+  const { inputTaskType, handleChangeInputTask } = TaskStore
+  return (
+    <input
+      className='input input--task'
+      placeholder='Add new task in here'
+      value={inputTaskType}
+      onChange={handleChangeInputTask}
+    />
+  )
 }
+
+export default observer(Input)

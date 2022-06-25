@@ -1,9 +1,13 @@
-import React from 'react'
+import { LIMIT_TASK_IN_PAGE } from 'constants/common'
+import { observer } from 'mobx-react'
+import React, { useContext } from 'react'
+import { TaskStoreContext } from 'stores/TaskStore'
 import './style.css'
 
-const Panigation = (props) => {
-  const { currentPage, limit, taskLists, handleSetCurrentPage } = props
-  const endPage = taskLists.length / limit
+const Panigation = () => {
+  const TaskStore = useContext(TaskStoreContext)
+  const { currentPage, listTasks, handleSetCurrentPage } = TaskStore
+  const endPage = listTasks.length / LIMIT_TASK_IN_PAGE
 
   return (
     <div className='panigation-wrapper'>
@@ -17,4 +21,4 @@ const Panigation = (props) => {
 
 }
 
-export default Panigation
+export default observer(Panigation)

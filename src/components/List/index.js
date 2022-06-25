@@ -1,25 +1,23 @@
-import React, { Component } from 'react'
+import React, { useContext } from 'react';
+import { observer } from 'mobx-react'
 import ListItem from './ListItem'
+import { TaskStoreContext } from 'stores/TaskStore';
 
-export default class List extends Component {
-  constructor(props) {
-    super(props)
-    this.props = props
-  }
-
-  render() {
-    const { taskLists, handleDeleteTask, handleCompleteTask } = this.props
-    return (
-      <div className='list-wrapper'>
-        {taskLists.map(taskItem => (
-          <ListItem
-            key={taskItem.id}
-            task={taskItem}
-            handleDeleteTask={handleDeleteTask}
-            handleCompleteTask={handleCompleteTask}
-          />
-        ))}
-      </div>
-    )
-  }
+const List = () => {
+  const TaskStore = useContext(TaskStoreContext)
+  const { getTaskInCurrentPage, handleDeleteTask, handleCompleteTask } = TaskStore
+  return (
+    <div className='list-wrapper'>
+      {getTaskInCurrentPage()?.map(taskItem => (
+        <ListItem
+          key={taskItem.id}
+          task={taskItem}
+          handleDeleteTask={handleDeleteTask}
+          handleCompleteTask={handleCompleteTask}
+        />
+      ))}
+    </div>
+  )
 }
+
+export default observer(List)
